@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Методы | JavaMaster</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфические стили для страницы урока */
+        .lesson-container {
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-title {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .lesson-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .lesson-content h2 {
+            color: var(--accent);
+            margin: 2.5rem 0 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 230, 204, 0.2);
+            font-size: 1.8rem;
+        }
+        
+        .lesson-content h3 {
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .lesson-content p {
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-content pre {
+            background-color: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lesson-content code {
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+        
+        .exercise {
+            background-color: rgba(0, 230, 204, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .exercise h3 {
+            color: var(--accent);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-button {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .back-button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 230, 204, 0.1);
+        }
+        
+        /* Анимации для контента урока */
+        .lesson-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .lesson-content > *.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Стили для блоков кода с пояснениями */
+        .code-explanation {
+            background-color: rgba(0, 230, 204, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .code-explanation p {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* Стили для таблицы модификаторов доступа */
+        .access-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .access-table th, .access-table td {
+            padding: 1rem;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .access-table th {
+            background-color: rgba(0, 230, 204, 0.2);
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .access-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .access-table code {
+            background-color: rgba(0, 230, 204, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 1.5rem;
+            }
+            
+            .lesson-title {
+                font-size: 2rem;
+            }
+            
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-button {
+                justify-content: center;
+            }
+            
+            .access-table {
+                font-size: 0.9rem;
+            }
+            
+            .access-table th, 
+            .access-table td {
+                padding: 0.5rem;
+            }
+        }
+        
+        .level-medium {
+            background-color: #ff9800;
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Java</span><span class="logo-accent">Master</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Главная</a></li>
+                <li><a href="../lessons.html">Уроки</a></li>
+                <li><a href="../achievements.html">Достижения</a></li>
+                <li><a href="../about.html">О проекте</a></li>
+                <li><a href="../resources.html">Дополнительные ресурсы</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-content">
+            <article class="lesson-container">
+                <div class="lesson-header">
+                    <h1 class="lesson-title">Методы</h1>
+                    <div class="lesson-meta">
+                        <span class="lesson-duration"><i class="far fa-clock"></i> 45 мин</span>
+                        <span class="lesson-level level-medium">Средний</span>
+                    </div>
+                </div>
+
+                <div class="lesson-content">
+                    <h2>Что такое методы?</h2>
+                    <p>Методы в Java — это блоки кода, которые выполняют определенную задачу и могут быть вызваны из других частей программы. Они позволяют организовать код в логические блоки, сделать его более читаемым и избежать повторения.</p>
+                    
+                    <h2>Синтаксис объявления метода</h2>
+                    <p>Метод состоит из следующих частей:</p>
+                    
+                    <pre><code>модификаторы типВозвращаемогоЗначения имяМетода(параметры) {
+    // тело метода
+    return значение; // если метод возвращает значение
+}</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Простой метод без параметров</p>
+                    </div>
+                    
+                    <pre><code>public class Example {
+    // Метод, который выводит приветствие
+    public static void sayHello() {
+        System.out.println("Привет, мир!");
+    }
+    
+    public static void main(String[] args) {
+        sayHello(); // вызов метода
+    }
+}</code></pre>
+                    
+                    <h2>Типы методов</h2>
+                    
+                    <h3>Методы без возвращаемого значения (void)</h3>
+                    <p>Используют ключевое слово <code>void</code> и не возвращают значение:</p>
+                    
+                    <pre><code>public static void printMessage(String message) {
+    System.out.println(message);
+}</code></pre>
+                    
+                    <h3>Методы с возвращаемым значением</h3>
+                    <p>Возвращают значение указанного типа с помощью оператора <code>return</code>:</p>
+                    
+                    <pre><code>public static int add(int a, int b) {
+    return a + b;
+}</code></pre>
+                    
+                    <h3>Статические и нестатические методы</h3>
+                    <p>Статические методы (с модификатором <code>static</code>) принадлежат классу, а не объекту, и могут быть вызваны без создания экземпляра класса.</p>
+                    
+                    <h2>Параметры методов</h2>
+                    <p>Методы могут принимать параметры — значения, которые передаются в метод при его вызове:</p>
+                    
+                    <pre><code>public static void greetUser(String name, int age) {
+    System.out.println("Привет, " + name + "! Тебе " + age + " лет.");
+}</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Вызов метода с параметрами</p>
+                    </div>
+                    
+                    <pre><code>public class MethodExample {
+    public static void main(String[] args) {
+        greetUser("Анна", 25); // Привет, Анна! Тебе 25 лет.
+        
+        int result = multiply(5, 7);
+        System.out.println("Результат умножения: " + result); // 35
+    }
+    
+    public static void greetUser(String name, int age) {
+        System.out.println("Привет, " + name + "! Тебе " + age + " лет.");
+    }
+    
+    public static int multiply(int a, int b) {
+        return a * b;
+    }
+}</code></pre>
+                    
+                    <h2>Перегрузка методов (Method Overloading)</h2>
+                    <p>Перегрузка позволяет создавать несколько методов с одинаковым именем, но разными параметрами:</p>
+                    
+                    <pre><code>public class Calculator {
+    // Сложение двух целых чисел
+    public static int add(int a, int b) {
+        return a + b;
+    }
+    
+    // Сложение трех целых чисел
+    public static int add(int a, int b, int c) {
+        return a + b + c;
+    }
+    
+    // Сложение двух чисел с плавающей точкой
+    public static double add(double a, double b) {
+        return a + b;
+    }
+    
+    // Сложение массива чисел
+    public static int add(int[] numbers) {
+        int sum = 0;
+        for (int num : numbers) {
+            sum += num;
+        }
+        return sum;
+    }
+}</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p>Компилятор определяет, какой метод вызвать, на основе количества и типов параметров.</p>
+                    </div>
+                    
+                    <h2>Рекурсия</h2>
+                    <p>Рекурсия — это когда метод вызывает сам себя. Полезно для решения задач, которые можно разбить на подобные подзадачи:</p>
+                    
+                    <pre><code>public class RecursionExample {
+    // Вычисление факториала числа рекурсивно
+    public static int factorial(int n) {
+        if (n == 0 || n == 1) {
+            return 1; // базовый случай
+        } else {
+            return n * factorial(n - 1); // рекурсивный вызов
+        }
+    }
+    
+    // Вычисление чисел Фибоначчи
+    public static int fibonacci(int n) {
+        if (n <= 1) {
+            return n;
+        } else {
+            return fibonacci(n - 1) + fibonacci(n - 2);
+        }
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("Факториал 5: " + factorial(5)); // 120
+        System.out.println("Число Фибоначчи под номером 7: " + fibonacci(7)); // 13
+    }
+}</code></pre>
+                    
+                    <h2>Модификаторы доступа</h2>
+                    <p>Модификаторы доступа определяют видимость методов и переменных:</p>
+                    
+                    <table class="access-table">
+                        <thead>
+                            <tr>
+                                <th>Модификатор</th>
+                                <th>Видимость</th>
+                                <th>Описание</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>public</code></td>
+                                <td>Везде</td>
+                                <td>Метод доступен из любого другого класса</td>
+                            </tr>
+                            <tr>
+                                <td><code>protected</code></td>
+                                <td>В пакете и подклассах</td>
+                                <td>Метод доступен в том же пакете и в подклассах</td>
+                            </tr>
+                            <tr>
+                                <td><code>private</code></td>
+                                <td>Только в классе</td>
+                                <td>Метод доступен только внутри своего класса</td>
+                            </tr>
+                            <tr>
+                                <td>(без модификатора)</td>
+                                <td>В пакете</td>
+                                <td>Метод доступен только в том же пакете</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="exercise">
+                        <h3><i class="fas fa-pencil-alt"></i> Упражнение</h3>
+                        <p>Напишите программу, которая включает следующие методы:</p>
+                        <ol>
+                            <li>Метод для проверки, является ли число простым</li>
+                            <li>Метод для вычисления площади круга по радиусу</li>
+                            <li>Метод для нахождения максимального элемента в массиве</li>
+                            <li>Перегруженные методы для сложения чисел (целых, вещественных, массива)</li>
+                            <li>Рекурсивный метод для вычисления суммы цифр числа</li>
+                            <li>Метод для отображения таблицы умножения до заданного числа</li>
+                        </ol>
+                    </div>
+                    
+                    <h2>Передача параметров в методы</h2>
+                    <p>В Java параметры в методы передаются по значению. Это означает, что метод получает копию значения, а не оригинальную переменную:</p>
+                    
+                    <pre><code>public class ParameterPassing {
+    public static void modifyPrimitive(int x) {
+        x = x * 2; // изменяется копия, оригинал не меняется
+        System.out.println("Внутри метода: " + x);
+    }
+    
+    public static void modifyArray(int[] arr) {
+        arr[0] = 999; // изменяется оригинальный массив
+        System.out.println("Внутри метода: " + Arrays.toString(arr));
+    }
+    
+    public static void main(String[] args) {
+        int number = 5;
+        System.out.println("До вызова: " + number);
+        modifyPrimitive(number);
+        System.out.println("После вызова: " + number); // останется 5
+        
+        int[] numbers = {1, 2, 3};
+        System.out.println("До вызова: " + Arrays.toString(numbers));
+        modifyArray(numbers);
+        System.out.println("После вызова: " + Arrays.toString(numbers)); // изменится
+    }
+}</code></pre>
+                    
+                    <h2>Методы с переменным числом параметров (Varargs)</h2>
+                    <p>Varargs позволяют передавать переменное количество аргументов одного типа:</p>
+                    
+                    <pre><code>public class VarargsExample {
+    // Метод с переменным числом параметров
+    public static int sum(int... numbers) {
+        int total = 0;
+        for (int num : numbers) {
+            total += num;
+        }
+        return total;
+    }
+    
+    // Можно комбинировать с обычными параметрами
+    public static void printValues(String message, int... values) {
+        System.out.print(message + ": ");
+        for (int val : values) {
+            System.out.print(val + " ");
+        }
+        System.out.println();
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("Сумма: " + sum(1, 2, 3)); // 6
+        System.out.println("Сумма: " + sum(1, 2, 3, 4, 5)); // 15
+        System.out.println("Сумма: " + sum()); // 0
+        
+        printValues("Числа", 1, 2, 3, 4, 5);
+    }
+}</code></pre>
+                    
+                    <h2>Пример программы</h2>
+                    <pre><code>import java.util.Arrays;
+
+public class MethodsExample {
+    public static void main(String[] args) {
+        // Вызов различных методов
+        printWelcomeMessage();
+        
+        int result = add(15, 27);
+        System.out.println("15 + 27 = " + result);
+        
+        double circleArea = calculateCircleArea(5.0);
+        System.out.println("Площадь круга с радиусом 5: " + circleArea);
+        
+        int[] numbers = {7, 3, 9, 2, 5};
+        int max = findMax(numbers);
+        System.out.println("Максимальный элемент в массиве: " + max);
+        
+        // Перегруженные методы
+        System.out.println("Сумма двух целых: " + add(10, 20));
+        System.out.println("Сумма трех целых: " + add(10, 20, 30));
+        System.out.println("Сумма двух вещественных: " + add(3.5, 2.7));
+        
+        // Рекурсивный метод
+        int factorial = calculateFactorial(5);
+        System.out.println("Факториал 5: " + factorial);
+        
+        // Метод с varargs
+        int sum = calculateSum(1, 2, 3, 4, 5);
+        System.out.println("Сумма чисел: " + sum);
+    }
+    
+    // Метод без параметров и возвращаемого значения
+    public static void printWelcomeMessage() {
+        System.out.println("Добро пожаловать в программу работы с методами!");
+    }
+    
+    // Метод с параметрами и возвращаемым значением
+    public static int add(int a, int b) {
+        return a + b;
+    }
+    
+    // Перегруженный метод
+    public static int add(int a, int b, int c) {
+        return a + b + c;
+    }
+    
+    // Еще один перегруженный метод
+    public static double add(double a, double b) {
+        return a + b;
+    }
+    
+    // Метод, вычисляющий площадь круга
+    public static double calculateCircleArea(double radius) {
+        return Math.PI * radius * radius;
+    }
+    
+    // Метод для поиска максимального элемента в массиве
+    public static int findMax(int[] array) {
+        if (array.length == 0) {
+            throw new IllegalArgumentException("Массив не может быть пустым");
+        }
+        
+        int max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+            }
+        }
+        return max;
+    }
+    
+    // Рекурсивный метод для вычисления факториала
+    public static int calculateFactorial(int n) {
+        if (n < 0) {
+            throw new IllegalArgumentException("Число не может быть отрицательным");
+        }
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+        return n * calculateFactorial(n - 1);
+    }
+    
+    // Метод с переменным числом параметров
+    public static int calculateSum(int... numbers) {
+        int sum = 0;
+        for (int num : numbers) {
+            sum += num;
+        }
+        return sum;
+    }
+}</code></pre>
+                    
+                    <h2>Ключевые моменты</h2>
+                    <ul>
+                        <li>Методы позволяют организовать код в логические блоки и избежать повторения</li>
+                        <li>Методы могут принимать параметры и возвращать значения</li>
+                        <li>Перегрузка методов позволяет создавать несколько методов с одинаковым именем, но разными параметрами</li>
+                        <li>Рекурсия — это когда метод вызывает сам себя</li>
+                        <li>Модификаторы доступа определяют видимость методов</li>
+                        <li>Параметры примитивных типов передаются по значению, а объекты — по ссылке</li>
+                        <li>Varargs позволяют передавать переменное количество аргументов</li>
+                        <li>Хорошие методы имеют понятное имя и выполняют одну четкую задачу</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-navigation">
+                    <a href="lesson-6.html" class="nav-button back-button"><i class="fas fa-arrow-left"></i> Предыдущий урок</a>
+                    <a href="../lessons.html" class="nav-button back-button"><i class="fas fa-list"></i> Все уроки</a>
+                    <a href="lesson-8.html" class="nav-button">Следующий урок <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+    </main>
+<!-- Блок завершения урока -->
+<div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background-color: rgba(0, 230, 204, 0.1); border-radius: 8px;">
+    <button onclick="completeLesson()" class="nav-button" id="complete-btn">
+        <i class="fas fa-check-circle"></i> Завершить урок
+    </button>
+    <p id="completion-message" style="display: none; color: var(--accent); margin-top: 1rem;">
+        <i class="fas fa-check-circle"></i> Урок завершен!
+    </p>
+</div>
+<script>
+    // Уникальный идентификатор для каждого урока
+    const lessonId = "lesson-7"; // Замените на соответствующий ID для каждого урока
+    
+    // Проверяем, завершен ли уже урок
+    document.addEventListener('DOMContentLoaded', function() {
+        // Проверяем в sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Проверяем в localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}}');
+        
+        if (sessionCompleted[lessonId] || userData.completedLessons[lessonId]) {
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+        }
+    });
+    
+    // Функция завершения урока
+    function completeLesson() {
+        // Загружаем данные из sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Загружаем данные из localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}, "consecutiveDays":0, "dailyCompletions":{}}');
+        
+        // Если урок еще не завершен
+        if (!sessionCompleted[lessonId] && !userData.completedLessons[lessonId]) {
+            // Отмечаем урок как завершенный в sessionStorage
+            sessionCompleted[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            sessionStorage.setItem('completedLessons', JSON.stringify(sessionCompleted));
+            
+            // Обновляем данные для достижений в localStorage
+            userData.completedLessons[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            
+            // Обновляем статистику последовательных дней
+            const today = new Date();
+            const lastVisit = userData.lastVisit ? new Date(userData.lastVisit) : new Date();
+            const diffTime = Math.abs(today - lastVisit);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays <= 1) {
+                userData.consecutiveDays = (userData.consecutiveDays || 0) + 1;
+            } else {
+                userData.consecutiveDays = 1;
+            }
+            
+            // Обновляем ежедневную статистику
+            const todayStr = today.toDateString();
+            userData.dailyCompletions = userData.dailyCompletions || {};
+            userData.dailyCompletions[todayStr] = (userData.dailyCompletions[todayStr] || 0) + 1;
+            
+            userData.lastVisit = today.toISOString();
+            
+            // Если это первый визит, устанавливаем дату первого визита
+            if (!userData.firstVisit) {
+                userData.firstVisit = today.toISOString();
+            }
+            
+            // Сохраняем обновленные данные
+            localStorage.setItem('userAchievements', JSON.stringify(userData));
+            
+            // Обновляем UI
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+            
+            // Показываем уведомление
+            showNotification('Урок завершен!');
+        }
+    }
+    
+    // Функция показа уведомления
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--accent)';
+        notification.style.color = 'var(--bg-dark)';
+        notification.style.padding = '1rem';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 500);
+        }, 3000);
+    }
+</script>
+    <footer>
+        <p>© 2025 JavaMaster - Учебный проект для 9 класса</p>
+    </footer>
+
+    <script>
+        // Управление навигационной панелью
+        let lastScrollY = window.scrollY;
+        const header = document.querySelector('header');
+        const navHeight = header.offsetHeight;
+
+        // Функция для управления видимостью навигационной панели
+        function manageHeaderVisibility() {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY < 50) {
+                // Вверху страницы - всегда показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            } else if (currentScrollY > lastScrollY) {
+                // Прокрутка вниз - скрываем навигацию
+                header.classList.remove('header-visible');
+                header.classList.add('header-hidden');
+            } else {
+                // Прокрутка вверх - показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+
+        // Обработчик события прокрутки
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    manageHeaderVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Анимация появления элементов контента при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Наблюдаем за всеми элементами контента урока
+        document.querySelectorAll('.lesson-content > *').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Мобильное меню
+        const burger = document.querySelector('.burger');
+        const nav = document.querySelector('.nav-links');
+        const navLinks = document.querySelectorAll('.nav-links li');
+
+        if (burger) {
+            burger.addEventListener('click', () => {
+                // Переключение навигации
+                nav.classList.toggle('nav-active');
+                
+                // Анимация ссылок
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Анимация бургера
+                burger.classList.toggle('toggle');
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            // Убедимся, что заголовок видим в начале
+            header.classList.add('header-visible');
+        });
+    </script>
+</body>
+</html>

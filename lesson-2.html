@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переменные и типы данных | JavaMaster</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфические стили для страницы урока */
+        .lesson-container {
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-title {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .lesson-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .lesson-content h2 {
+            color: var(--accent);
+            margin: 2.5rem 0 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 230, 204, 0.2);
+            font-size: 1.8rem;
+        }
+        
+        .lesson-content h3 {
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .lesson-content p {
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-content pre {
+            background-color: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lesson-content code {
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+        
+        .exercise {
+            background-color: rgba(0, 230, 204, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .exercise h3 {
+            color: var(--accent);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-button {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .back-button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 230, 204, 0.1);
+        }
+        
+        /* Анимации для контента урока */
+        .lesson-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .lesson-content > *.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 1.5rem;
+            }
+            
+            .lesson-title {
+                font-size: 2rem;
+            }
+            
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-button {
+                justify-content: center;
+            }
+        }
+        
+        /* Стили для таблицы типов данных */
+        .data-types-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .data-types-table th, .data-types-table td {
+            padding: 1rem;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-types-table th {
+            background-color: rgba(0, 230, 204, 0.2);
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .data-types-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .data-types-table code {
+            background-color: rgba(0, 230, 204, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Java</span><span class="logo-accent">Master</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Главная</a></li>
+                <li><a href="../lessons.html">Уроки</a></li>
+                <li><a href="../achievements.html">Достижения</a></li>
+                <li><a href="../about.html">О проекте</a></li>
+                <li><a href="../resources.html">Дополнительные ресурсы</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-content">
+            <article class="lesson-container">
+                <div class="lesson-header">
+                    <h1 class="lesson-title">Переменные и типы данных</h1>
+                    <div class="lesson-meta">
+                        <span class="lesson-duration"><i class="far fa-clock"></i> 20 мин</span>
+                        <span class="lesson-level level-beginner">Начальный</span>
+                    </div>
+                </div>
+
+                <div class="lesson-content">
+                    <h2>Что такое переменные?</h2>
+                    <p>Переменные в Java — это контейнеры для хранения данных. Каждая переменная имеет:</p>
+                    <ul>
+                        <li>Тип данных — определяет, какие значения может хранить переменная</li>
+                        <li>Имя (идентификатор) — используется для обращения к переменной</li>
+                        <li>Значение — данные, хранящиеся в переменной</li>
+                    </ul>
+                    
+                    <h2>Объявление переменных</h2>
+                    <p>Для создания переменной нужно указать её тип и имя:</p>
+                    <pre><code>тип имяПеременной;</code></pre>
+                    <p>Можно сразу присвоить значение:</p>
+                    <pre><code>тип имяПеременной = значение;</code></pre>
+                    
+                    <h2>Основные типы данных в Java</h2>
+                    <p>Java — язык со статической типизацией, что означает необходимость объявлять тип переменной до её использования.</p>
+                    
+                    <h3>Примитивные типы</h3>
+                    <table class="data-types-table">
+                        <thead>
+                            <tr>
+                                <th>Тип</th>
+                                <th>Размер</th>
+                                <th>Описание</th>
+                                <th>Пример</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>byte</code></td>
+                                <td>1 байт</td>
+                                <td>Целое число от -128 до 127</td>
+                                <td><code>byte age = 25;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>short</code></td>
+                                <td>2 байта</td>
+                                <td>Целое число от -32768 до 32767</td>
+                                <td><code>short temperature = -100;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>int</code></td>
+                                <td>4 байта</td>
+                                <td>Целое число от -2<sup>31</sup> до 2<sup>31</sup>-1</td>
+                                <td><code>int population = 1500000;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>long</code></td>
+                                <td>8 байт</td>
+                                <td>Целое число от -2<sup>63</sup> до 2<sup>63</sup>-1</td>
+                                <td><code>long distance = 15000000000L;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>float</code></td>
+                                <td>4 байта</td>
+                                <td>Число с плавающей точкой</td>
+                                <td><code>float price = 10.99f;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>double</code></td>
+                                <td>8 байт</td>
+                                <td>Число с плавающей точкой двойной точности</td>
+                                <td><code>double pi = 3.1415926535;</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>char</code></td>
+                                <td>2 байта</td>
+                                <td>Один символ Unicode</td>
+                                <td><code>char grade = 'A';</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>boolean</code></td>
+                                <td>1 бит</td>
+                                <td>Логическое значение true/false</td>
+                                <td><code>boolean isJavaFun = true;</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>Ссылочные типы</h3>
+                    <p>К ссылочным типам относятся строки, массивы, классы и интерфейсы. Самый распространенный — <code>String</code>:</p>
+                    <pre><code>String greeting = "Привет, мир!";</code></pre>
+                    
+                    <h2>Правила именования переменных</h2>
+                    <ul>
+                        <li>Могут содержать буквы, цифры, знак подчеркивания _ и знак доллара $</li>
+                        <li>Не могут начинаться с цифры</li>
+                        <li>Не могут быть ключевыми словами Java (<code>class</code>, <code>public</code>, <code>static</code> и т.д.)</li>
+                        <li>Чувствительны к регистру (<code>myVar</code> и <code>myvar</code> — разные переменные)</li>
+                    </ul>
+                    
+                    <div class="exercise">
+                        <h3><i class="fas fa-pencil-alt"></i> Упражнение</h3>
+                        <p>Создайте программу, которая объявляет переменные разных типов:</p>
+                        <ol>
+                            <li>Целочисленную переменную для хранения вашего возраста</li>
+                            <li>Переменную с плавающей точкой для хранения вашего роста</li>
+                            <li>Строковую переменную с вашим именем</li>
+                            <li>Логическую переменную, указывающую, нравится ли вам Java</li>
+                        </ol>
+                        <p>Выведите значения всех переменных на экран.</p>
+                    </div>
+                    
+                    <h2>Пример программы</h2>
+                    <pre><code>public class VariablesExample {
+    public static void main(String[] args) {
+        // Объявление и инициализация переменных
+        String name = "Алексей";
+        int age = 16;
+        double height = 1.75;
+        boolean lovesJava = true;
+        
+        // Вывод значений переменных
+        System.out.println("Имя: " + name);
+        System.out.println("Возраст: " + age + " лет");
+        System.out.println("Рост: " + height + " м");
+        System.out.println("Нравится Java: " + lovesJava);
+    }
+}</code></pre>
+                    
+                    <h2>Ключевые моменты</h2>
+                    <ul>
+                        <li>Все переменные должны быть объявлены перед использованием</li>
+                        <li>Java — строго типизированный язык, нельзя изменить тип переменной после объявления</li>
+                        <li>Имена переменных должны быть осмысленными и описывать хранимые данные</li>
+                        <li>Для имен переменных принято использовать camelCase (например, <code>myVariableName</code>)</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-navigation">
+                    <a href="lesson-1.html" class="nav-button back-button"><i class="fas fa-arrow-left"></i> Предыдущий урок</a>
+                    <a href="../lessons.html" class="nav-button back-button"><i class="fas fa-list"></i> Все уроки</a>
+                    <a href="lesson-3.html" class="nav-button">Следующий урок <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+    </main>
+<!-- Блок завершения урока -->
+<div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background-color: rgba(0, 230, 204, 0.1); border-radius: 8px;">
+    <button onclick="completeLesson()" class="nav-button" id="complete-btn">
+        <i class="fas fa-check-circle"></i> Завершить урок
+    </button>
+    <p id="completion-message" style="display: none; color: var(--accent); margin-top: 1rem;">
+        <i class="fas fa-check-circle"></i> Урок завершен!
+    </p>
+</div>
+
+<script>
+    // Уникальный идентификатор для каждого урока
+    const lessonId = "lesson-2"; // Замените на соответствующий ID для каждого урока
+    
+    // Проверяем, завершен ли уже урок
+    document.addEventListener('DOMContentLoaded', function() {
+        // Проверяем в sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Проверяем в localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}}');
+        
+        if (sessionCompleted[lessonId] || userData.completedLessons[lessonId]) {
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+        }
+    });
+    
+    // Функция завершения урока
+    function completeLesson() {
+        // Загружаем данные из sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Загружаем данные из localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}, "consecutiveDays":0, "dailyCompletions":{}}');
+        
+        // Если урок еще не завершен
+        if (!sessionCompleted[lessonId] && !userData.completedLessons[lessonId]) {
+            // Отмечаем урок как завершенный в sessionStorage
+            sessionCompleted[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            sessionStorage.setItem('completedLessons', JSON.stringify(sessionCompleted));
+            
+            // Обновляем данные для достижений в localStorage
+            userData.completedLessons[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            
+            // Обновляем статистику последовательных дней
+            const today = new Date();
+            const lastVisit = userData.lastVisit ? new Date(userData.lastVisit) : new Date();
+            const diffTime = Math.abs(today - lastVisit);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays <= 1) {
+                userData.consecutiveDays = (userData.consecutiveDays || 0) + 1;
+            } else {
+                userData.consecutiveDays = 1;
+            }
+            
+            // Обновляем ежедневную статистику
+            const todayStr = today.toDateString();
+            userData.dailyCompletions = userData.dailyCompletions || {};
+            userData.dailyCompletions[todayStr] = (userData.dailyCompletions[todayStr] || 0) + 1;
+            
+            userData.lastVisit = today.toISOString();
+            
+            // Если это первый визит, устанавливаем дату первого визита
+            if (!userData.firstVisit) {
+                userData.firstVisit = today.toISOString();
+            }
+            
+            // Сохраняем обновленные данные
+            localStorage.setItem('userAchievements', JSON.stringify(userData));
+            
+            // Обновляем UI
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+            
+            // Показываем уведомление
+            showNotification('Урок завершен!');
+        }
+    }
+    
+    // Функция показа уведомления
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--accent)';
+        notification.style.color = 'var(--bg-dark)';
+        notification.style.padding = '1rem';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 500);
+        }, 3000);
+    }
+</script>
+    <footer>
+        <p>© 2025 JavaMaster - Учебный проект для 9 класса</p>
+    </footer>
+
+    <script>
+        // Управление навигационной панелью
+        let lastScrollY = window.scrollY;
+        const header = document.querySelector('header');
+        const navHeight = header.offsetHeight;
+
+        // Функция для управления видимостью навигационной панели
+        function manageHeaderVisibility() {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY < 50) {
+                // Вверху страницы - всегда показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            } else if (currentScrollY > lastScrollY) {
+                // Прокрутка вниз - скрываем навигацию
+                header.classList.remove('header-visible');
+                header.classList.add('header-hidden');
+            } else {
+                // Прокрутка вверх - показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+
+        // Обработчик события прокрутки
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    manageHeaderVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Анимация появления элементов контента при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Наблюдаем за всеми элементами контента урока
+        document.querySelectorAll('.lesson-content > *').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Мобильное меню
+        const burger = document.querySelector('.burger');
+        const nav = document.querySelector('.nav-links');
+        const navLinks = document.querySelectorAll('.nav-links li');
+
+        if (burger) {
+            burger.addEventListener('click', () => {
+                // Переключение навигации
+                nav.classList.toggle('nav-active');
+                
+                // Анимация ссылок
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Анимация бургера
+                burger.classList.toggle('toggle');
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            // Убедимся, что заголовок видим в начале
+            header.classList.add('header-visible');
+        });
+    </script>
+</body>
+</html>

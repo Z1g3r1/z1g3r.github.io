@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Классы и объекты | JavaMaster</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфические стили для страницы урока */
+        .lesson-container {
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-title {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .lesson-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .lesson-content h2 {
+            color: var(--accent);
+            margin: 2.5rem 0 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 230, 204, 0.2);
+            font-size: 1.8rem;
+        }
+        
+        .lesson-content h3 {
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .lesson-content p {
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-content pre {
+            background-color: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lesson-content code {
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+        
+        .exercise {
+            background-color: rgba(0, 230, 204, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .exercise h3 {
+            color: var(--accent);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-button {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .back-button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 230, 204, 0.1);
+        }
+        
+        /* Анимации для контента урока */
+        .lesson-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .lesson-content > *.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Стили для блоков кода с пояснениями */
+        .code-explanation {
+            background-color: rgba(0, 230, 204, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .code-explanation p {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* Стили для таблицы принципов ООП */
+        .oop-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .oop-table th, .oop-table td {
+            padding: 1rem;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .oop-table th {
+            background-color: rgba(0, 230, 204, 0.2);
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .oop-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 1.5rem;
+            }
+            
+            .lesson-title {
+                font-size: 2rem;
+            }
+            
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-button {
+                justify-content: center;
+            }
+            
+            .oop-table {
+                font-size: 0.9rem;
+            }
+            
+            .oop-table th, 
+            .oop-table td {
+                padding: 0.5rem;
+            }
+        }
+        
+        .level-medium {
+            background-color: #ff9800;
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Java</span><span class="logo-accent">Master</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Главная</a></li>
+                <li><a href="../lessons.html">Уроки</a></li>
+                <li><a href="../achievements.html">Достижения</a></li>
+                <li><a href="../about.html">О проекте</a></li>
+                <li><a href="../resources.html">Дополнительные ресурсы</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-content">
+            <article class="lesson-container">
+                <div class="lesson-header">
+                    <h1 class="lesson-title">Классы и объекты</h1>
+                    <div class="lesson-meta">
+                        <span class="lesson-duration"><i class="far fa-clock"></i> 50 мин</span>
+                        <span class="lesson-level level-medium">Средний</span>
+                    </div>
+                </div>
+
+                <div class="lesson-content">
+                    <h2>Введение в объектно-ориентированное программирование (ООП)</h2>
+                    <p>Объектно-ориентированное программирование — это парадигма программирования, в которой программа представляется как набор объектов, взаимодействующих друг с другом. Java является полностью объектно-ориентированным языком.</p>
+                    
+                    <h2>Основные принципы ООП</h2>
+                    <table class="oop-table">
+                        <thead>
+                            <tr>
+                                <th>Принцип</th>
+                                <th>Описание</th>
+                                <th>Преимущества</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Инкапсуляция</td>
+                                <td>Объединение данных и методов в единый объект, скрытие внутренней реализации</td>
+                                <td>Повышение безопасности, упрощение использования</td>
+                            </tr>
+                            <tr>
+                                <td>Наследование</td>
+                                <td>Создание новых классов на основе существующих с наследованием их свойств и методов</td>
+                                <td>Повторное использование кода, иерархическая организация</td>
+                            </tr>
+                            <tr>
+                                <td>Полиморфизм</td>
+                                <td>Возможность объектов с одинаковой спецификацией иметь различную реализацию</td>
+                                <td>Гибкость, расширяемость кода</td>
+                            </tr>
+                            <tr>
+                                <td>Абстракция</td>
+                                <td>Выделение основных характеристик объекта и игнорирование несущественных деталей</td>
+                                <td>Упрощение сложных систем, сокрытие сложности</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h2>Что такое классы и объекты?</h2>
+                    <p><strong>Класс</strong> — это шаблон или чертеж для создания объектов. Он определяет свойства (поля) и поведение (методы) объектов.</p>
+                    <p><strong>Объект</strong> — это экземпляр класса, конкретная реализация, созданная на основе класса.</p>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Аналогия:</strong> Класс — это чертеж дома, а объект — это конкретный дом, построенный по этому чертежу.</p>
+                    </div>
+                    
+                    <h2>Создание класса в Java</h2>
+                    <p>Класс объявляется с помощью ключевого слова <code>class</code>:</p>
+                    
+                    <pre><code>public class Car {
+    // Поля класса (свойства)
+    String brand;
+    String model;
+    int year;
+    double price;
+    
+    // Методы класса (поведение)
+    void startEngine() {
+        System.out.println("Двигатель запущен");
+    }
+    
+    void stopEngine() {
+        System.out.println("Двигатель остановлен");
+    }
+    
+    void displayInfo() {
+        System.out.println(brand + " " + model + " (" + year + ")");
+    }
+}</code></pre>
+                    
+                    <h2>Создание объектов</h2>
+                    <p>Объекты создаются с помощью ключевого слова <code>new</code>:</p>
+                    
+                    <pre><code>public class Main {
+    public static void main(String[] args) {
+        // Создание объекта класса Car
+        Car myCar = new Car();
+        
+        // Установка значений полей
+        myCar.brand = "Toyota";
+        myCar.model = "Camry";
+        myCar.year = 2020;
+        myCar.price = 25000.0;
+        
+        // Вызов методов объекта
+        myCar.displayInfo(); // Toyota Camry (2020)
+        myCar.startEngine(); // Двигатель запущен
+    }
+}</code></pre>
+                    
+                    <h2>Конструкторы</h2>
+                    <p>Конструктор — это специальный метод, который вызывается при создании объекта. Он используется для инициализации полей объекта.</p>
+                    
+                    <pre><code>public class Car {
+    String brand;
+    String model;
+    int year;
+    double price;
+    
+    // Конструктор по умолчанию (без параметров)
+    public Car() {
+        brand = "Unknown";
+        model = "Unknown";
+        year = 2023;
+        price = 0.0;
+    }
+    
+    // Конструктор с параметрами
+    public Car(String brand, String model, int year, double price) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+        this.price = price;
+    }
+    
+    // Другие методы...
+}</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Ключевое слово <code>this</code></strong> используется для обращения к полям текущего объекта, когда имена параметров совпадают с именами полей.</p>
+                    </div>
+                    
+                    <h2>Инкапсуляция и модификаторы доступа</h2>
+                    <p>Инкапсуляция — это сокрытие внутренней реализации объекта и предоставление контролируемого доступа к данным через методы.</p>
+                    
+                    <pre><code>public class BankAccount {
+    // Приватные поля (инкапсуляция)
+    private String accountNumber;
+    private double balance;
+    
+    // Конструктор
+    public BankAccount(String accountNumber, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.balance = initialBalance;
+    }
+    
+    // Публичные методы для доступа к полям (геттеры и сеттеры)
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+    
+    public double getBalance() {
+        return balance;
+    }
+    
+    // Методы для работы с балансом
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Средства зачислены: " + amount);
+        } else {
+            System.out.println("Неверная сумма для зачисления");
+        }
+    }
+    
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Средства сняты: " + amount);
+        } else {
+            System.out.println("Недостаточно средств или неверная сумма");
+        }
+    }
+}</code></pre>
+                    
+                    <h2>Статические поля и методы</h2>
+                    <p>Статические поля и методы принадлежат классу, а не объекту. Они объявляются с ключевым словом <code>static</code>.</p>
+                    
+                    <pre><code>public class MathOperations {
+    // Статическое поле
+    public static final double PI = 3.14159;
+    
+    // Статический метод
+    public static double calculateCircleArea(double radius) {
+        return PI * radius * radius;
+    }
+    
+    // Статический метод
+    public static int add(int a, int b) {
+        return a + b;
+    }
+}
+
+// Использование статических методов
+public class Main {
+    public static void main(String[] args) {
+        double area = MathOperations.calculateCircleArea(5.0);
+        int sum = MathOperations.add(10, 20);
+        
+        System.out.println("Площадь круга: " + area);
+        System.out.println("Сумма: " + sum);
+        System.out.println("Значение PI: " + MathOperations.PI);
+    }
+}</code></pre>
+                    
+                    <div class="exercise">
+                        <h3><i class="fas fa-pencil-alt"></i> Упражнение</h3>
+                        <p>Создайте программу, которая включает следующие классы:</p>
+                        <ol>
+                            <li>Класс <code>Student</code> с полями: имя, возраст, средний балл</li>
+                            <li>Класс <code>Book</code> с полями: название, автор, год издания</li>
+                            <li>Класс <code>Rectangle</code> с полями: ширина, высота и методами для вычисления площади и периметра</li>
+                            <li>Для каждого класса создайте конструкторы (по умолчанию и с параметрами)</li>
+                            <li>Реализуйте геттеры и сеттеры для всех полей</li>
+                            <li>Создайте несколько объектов каждого класса и продемонстрируйте их работу</li>
+                            <li>Добавьте статическое поле для подсчета количества созданных объектов каждого класса</li>
+                        </ol>
+                    </div>
+                    
+                    <h2>Пакеты и импорт</h2>
+                    <p>Пакеты используются для организации классов в логические группы. Классы можно импортировать для использования в других классах.</p>
+                    
+                    <pre><code>// Объявление пакета (должно быть первой строкой в файле)
+package com.javamaster.models;
+
+// Импорт классов
+import java.util.Date;
+import java.util.List;
+
+public class Order {
+    private int id;
+    private Date orderDate;
+    private List<String> items;
+    
+    // Конструкторы и методы...
+}</code></pre>
+                    
+                    <h2>Пример программы</h2>
+                    <pre><code>// Класс Student
+public class Student {
+    private String name;
+    private int age;
+    private double gpa;
+    private static int studentCount = 0;
+    
+    // Конструктор по умолчанию
+    public Student() {
+        studentCount++;
+    }
+    
+    // Конструктор с параметрами
+    public Student(String name, int age, double gpa) {
+        this.name = name;
+        this.age = age;
+        this.gpa = gpa;
+        studentCount++;
+    }
+    
+    // Геттеры и сеттеры
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getAge() {
+        return age;
+    }
+    
+    public void setAge(int age) {
+        if (age > 0) {
+            this.age = age;
+        }
+    }
+    
+    public double getGpa() {
+        return gpa;
+    }
+    
+    public void setGpa(double gpa) {
+        if (gpa >= 0 && gpa <= 4.0) {
+            this.gpa = gpa;
+        }
+    }
+    
+    // Статический метод
+    public static int getStudentCount() {
+        return studentCount;
+    }
+    
+    // Метод для отображения информации
+    public void displayInfo() {
+        System.out.println("Студент: " + name + ", Возраст: " + age + ", Средний балл: " + gpa);
+    }
+}
+
+// Главный класс
+public class SchoolManagement {
+    public static void main(String[] args) {
+        // Создание объектов Student
+        Student student1 = new Student("Иван Петров", 20, 3.8);
+        Student student2 = new Student("Мария Сидорова", 19, 4.0);
+        Student student3 = new Student("Алексей Иванов", 21, 3.5);
+        
+        // Использование методов объектов
+        student1.displayInfo();
+        student2.displayInfo();
+        student3.displayInfo();
+        
+        // Изменение свойств через сеттеры
+        student1.setGpa(3.9);
+        System.out.println("Новый средний балл Ивана: " + student1.getGpa());
+        
+        // Использование статического метода
+        System.out.println("Всего студентов: " + Student.getStudentCount());
+        
+        // Демонстрация инкапсуляции
+        // student1.name = "Новое имя"; // Ошибка! Поле private
+        student1.setName("Иван Новый"); // Правильный способ
+        System.out.println("Новое имя: " + student1.getName());
+    }
+}</code></pre>
+                    
+                    <h2>Ключевые моменты</h2>
+                    <ul>
+                        <li>Классы — это шаблоны для создания объектов, определяющие их свойства и поведение</li>
+                        <li>Объекты — это экземпляры классов, созданные на основе этих шаблонов</li>
+                        <li>Конструкторы используются для инициализации объектов при их создании</li>
+                        <li>Инкапсуляция позволяет скрыть внутреннюю реализацию и предоставить контролируемый доступ к данным</li>
+                        <li>Геттеры и сеттеры используются для доступа к приватным полям класса</li>
+                        <li>Статические поля и методы принадлежат классу, а не объекту</li>
+                        <li>Ключевое слово <code>this</code> ссылается на текущий объект</li>
+                        <li>Пакеты помогают организовать код в логические группы</li>
+                        <li>ООП основывается на четырех принципах: инкапсуляция, наследование, полиморфизм и абстракция</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-navigation">
+                    <a href="lesson-7.html" class="nav-button back-button"><i class="fas fa-arrow-left"></i> Предыдущий урок</a>
+                    <a href="../lessons.html" class="nav-button back-button"><i class="fas fa-list"></i> Все уроки</a>
+                    <a href="../index.html" class="nav-button"><i class="fas fa-home"></i> На главную</a>
+                </div>
+            </article>
+        </div>
+    </main>
+<!-- Блок завершения урока -->
+<div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background-color: rgba(0, 230, 204, 0.1); border-radius: 8px;">
+    <button onclick="completeLesson()" class="nav-button" id="complete-btn">
+        <i class="fas fa-check-circle"></i> Завершить урок
+    </button>
+    <p id="completion-message" style="display: none; color: var(--accent); margin-top: 1rem;">
+        <i class="fas fa-check-circle"></i> Урок завершен!
+    </p>
+</div>
+
+<script>
+    // Уникальный идентификатор для каждого урока
+    const lessonId = "lesson-8"; // Замените на соответствующий ID для каждого урока
+    
+    // Проверяем, завершен ли уже урок
+    document.addEventListener('DOMContentLoaded', function() {
+        // Проверяем в sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Проверяем в localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}}');
+        
+        if (sessionCompleted[lessonId] || userData.completedLessons[lessonId]) {
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+        }
+    });
+    
+    // Функция завершения урока
+    function completeLesson() {
+        // Загружаем данные из sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Загружаем данные из localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}, "consecutiveDays":0, "dailyCompletions":{}}');
+        
+        // Если урок еще не завершен
+        if (!sessionCompleted[lessonId] && !userData.completedLessons[lessonId]) {
+            // Отмечаем урок как завершенный в sessionStorage
+            sessionCompleted[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            sessionStorage.setItem('completedLessons', JSON.stringify(sessionCompleted));
+            
+            // Обновляем данные для достижений в localStorage
+            userData.completedLessons[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            
+            // Обновляем статистику последовательных дней
+            const today = new Date();
+            const lastVisit = userData.lastVisit ? new Date(userData.lastVisit) : new Date();
+            const diffTime = Math.abs(today - lastVisit);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays <= 1) {
+                userData.consecutiveDays = (userData.consecutiveDays || 0) + 1;
+            } else {
+                userData.consecutiveDays = 1;
+            }
+            
+            // Обновляем ежедневную статистику
+            const todayStr = today.toDateString();
+            userData.dailyCompletions = userData.dailyCompletions || {};
+            userData.dailyCompletions[todayStr] = (userData.dailyCompletions[todayStr] || 0) + 1;
+            
+            userData.lastVisit = today.toISOString();
+            
+            // Если это первый визит, устанавливаем дату первого визита
+            if (!userData.firstVisit) {
+                userData.firstVisit = today.toISOString();
+            }
+            
+            // Сохраняем обновленные данные
+            localStorage.setItem('userAchievements', JSON.stringify(userData));
+            
+            // Обновляем UI
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+            
+            // Показываем уведомление
+            showNotification('Урок завершен!');
+        }
+    }
+    
+    // Функция показа уведомления
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--accent)';
+        notification.style.color = 'var(--bg-dark)';
+        notification.style.padding = '1rem';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 500);
+        }, 3000);
+    }
+</script>
+    <footer>
+        <p>© 2025 JavaMaster - Учебный проект для 9 класса</p>
+    </footer>
+
+    <script>
+        // Управление навигационной панелью
+        let lastScrollY = window.scrollY;
+        const header = document.querySelector('header');
+        const navHeight = header.offsetHeight;
+
+        // Функция для управления видимостью навигационной панели
+        function manageHeaderVisibility() {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY < 50) {
+                // Вверху страницы - всегда показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            } else if (currentScrollY > lastScrollY) {
+                // Прокрутка вниз - скрываем навигацию
+                header.classList.remove('header-visible');
+                header.classList.add('header-hidden');
+            } else {
+                // Прокрутка вверх - показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+
+        // Обработчик события прокрутки
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    manageHeaderVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Анимация появления элементов контента при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Наблюдаем за всеми элементами контента урока
+        document.querySelectorAll('.lesson-content > *').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Мобильное меню
+        const burger = document.querySelector('.burger');
+        const nav = document.querySelector('.nav-links');
+        const navLinks = document.querySelectorAll('.nav-links li');
+
+        if (burger) {
+            burger.addEventListener('click', () => {
+                // Переключение навигации
+                nav.classList.toggle('nav-active');
+                
+                // Анимация ссылок
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Анимация бургера
+                burger.classList.toggle('toggle');
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            // Убедимся, что заголовок видим в начале
+            header.classList.add('header-visible');
+        });
+    </script>
+</body>
+</html>

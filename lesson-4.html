@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Условные конструкции | JavaMaster</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфические стили для страницы урока */
+        .lesson-container {
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-title {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .lesson-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .lesson-content h2 {
+            color: var(--accent);
+            margin: 2.5rem 0 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 230, 204, 0.2);
+            font-size: 1.8rem;
+        }
+        
+        .lesson-content h3 {
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .lesson-content p {
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-content pre {
+            background-color: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lesson-content code {
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+        
+        .exercise {
+            background-color: rgba(0, 230, 204, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .exercise h3 {
+            color: var(--accent);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-button {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .back-button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 230, 204, 0.1);
+        }
+        
+        /* Анимации для контента урока */
+        .lesson-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .lesson-content > *.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Стили для блоков кода с пояснениями */
+        .code-explanation {
+            background-color: rgba(0, 230, 204, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .code-explanation p {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 1.5rem;
+            }
+            
+            .lesson-title {
+                font-size: 2rem;
+            }
+            
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-button {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Java</span><span class="logo-accent">Master</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Главная</a></li>
+                <li><a href="../lessons.html">Уроки</a></li>
+                <li><a href="../achievements.html">Достижения</a></li>
+                <li><a href="../about.html">О проекте</a></li>
+                <li><a href="../resources.html">Дополнительные ресурсы</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-content">
+            <article class="lesson-container">
+                <div class="lesson-header">
+                    <h1 class="lesson-title">Условные конструкции</h1>
+                    <div class="lesson-meta">
+                        <span class="lesson-duration"><i class="far fa-clock"></i> 30 мин</span>
+                        <span class="lesson-level level-beginner">Начальный</span>
+                    </div>
+                </div>
+
+                <div class="lesson-content">
+                    <h2>Что такое условные конструкции?</h2>
+                    <p>Условные конструкции позволяют программе принимать решения и выполнять различные действия в зависимости от условий. Они являются фундаментальной частью любого языка программирования, включая Java.</p>
+                    
+                    <h2>Оператор if</h2>
+                    <p>Оператор <code>if</code> выполняет блок кода, если условие истинно:</p>
+                    
+                    <pre><code>if (условие) {
+    // код, выполняемый если условие истинно
+}</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Проверка возраста для голосования</p>
+                    </div>
+                    
+                    <pre><code>int age = 18;
+
+if (age >= 18) {
+    System.out.println("Вы можете голосовать!");
+}</code></pre>
+                    
+                    <h2>Оператор if-else</h2>
+                    <p>Оператор <code>if-else</code> позволяет выполнить один блок кода, если условие истинно, и другой - если ложно:</p>
+                    
+                    <pre><code>if (условие) {
+    // код, если условие истинно
+} else {
+    // код, если условие ложно
+}</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Проверка четности числа</p>
+                    </div>
+                    
+                    <pre><code>int number = 7;
+
+if (number % 2 == 0) {
+    System.out.println("Число четное");
+} else {
+    System.out.println("Число нечетное");
+}</code></pre>
+                    
+                    <h2>Оператор if-else-if</h2>
+                    <p>Для проверки нескольких условий используется конструкция <code>if-else-if</code>:</p>
+                    
+                    <pre><code>if (условие1) {
+    // код, если условие1 истинно
+} else if (условие2) {
+    // код, если условие2 истинно
+} else {
+    // код, если все условия ложны
+}</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Оценка результата теста</p>
+                    </div>
+                    
+                    <pre><code>int score = 85;
+
+if (score >= 90) {
+    System.out.println("Отлично!");
+} else if (score >= 75) {
+    System.out.println("Хорошо!");
+} else if (score >= 60) {
+    System.out.println("Удовлетворительно");
+} else {
+    System.out.println("Неудовлетворительно");
+}</code></pre>
+                    
+                    <h2>Тернарный оператор</h2>
+                    <p>Тернарный оператор <code>? :</code> позволяет compactly записать простое условие:</p>
+                    
+                    <pre><code>переменная = (условие) ? выражениеЕслиИстина : выражениеЕслиЛожь;</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Определение минимального из двух чисел</p>
+                    </div>
+                    
+                    <pre><code>int a = 10;
+int b = 5;
+int min = (a < b) ? a : b;
+
+System.out.println("Минимальное число: " + min);</code></pre>
+                    
+                    <h2>Оператор switch</h2>
+                    <p>Оператор <code>switch</code> позволяет выбрать один из многих вариантов выполнения кода:</p>
+                    
+                    <pre><code>switch(выражение) {
+    case значение1:
+        // код для значение1
+        break;
+    case значение2:
+        // код для значение2
+        break;
+    // ...
+    default:
+        // код, если ни одно значение не совпало
+}</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Определение дня недели</p>
+                    </div>
+                    
+                    <pre><code>int day = 3;
+String dayName;
+
+switch(day) {
+    case 1:
+        dayName = "Понедельник";
+        break;
+    case 2:
+        dayName = "Вторник";
+        break;
+    case 3:
+        dayName = "Среда";
+        break;
+    case 4:
+        dayName = "Четверг";
+        break;
+    case 5:
+        dayName = "Пятница";
+        break;
+    case 6:
+        dayName = "Суббота";
+        break;
+    case 7:
+        dayName = "Воскресенье";
+        break;
+    default:
+        dayName = "Неверный день";
+}
+
+System.out.println(dayName);</code></pre>
+                    
+                    <div class="exercise">
+                        <h3><i class="fas fa-pencil-alt"></i> Упражнение</h3>
+                        <p>Напишите программу, которая:</p>
+                        <ol>
+                            <li>Запрашивает у пользователя число (можно использовать Scanner)</li>
+                            <li>Проверяет, является ли число положительным, отрицательным или нулем</li>
+                            <li>Проверяет, делится ли число на 2 и на 3 одновременно</li>
+                            <li>Используя switch, выводит название месяца по его номеру (1-12)</li>
+                            <li>Использует тернарный оператор для определения максимального из двух чисел</li>
+                        </ol>
+                    </div>
+                    
+                    <h2>Вложенные условия</h2>
+                    <p>Условные операторы можно вкладывать друг в друга для создания сложных логических конструкций:</p>
+                    
+                    <pre><code>int age = 25;
+boolean hasLicense = true;
+
+if (age >= 18) {
+    if (hasLicense) {
+        System.out.println("Вы можете водить машину");
+    } else {
+        System.out.println("Вам нужно получить права");
+    }
+} else {
+    System.out.println("Вы слишком молоды для вождения");
+}</code></pre>
+                    
+                    <h2>Логические операторы в условиях</h2>
+                    <p>Для создания сложных условий используются логические операторы:</p>
+                    
+                    <pre><code>int age = 25;
+int score = 85;
+
+// Логическое И (&&) - оба условия должны быть истинны
+if (age >= 18 && score >= 70) {
+    System.out.println("Доступ разрешен");
+}
+
+// Логическое ИЛИ (||) - хотя бы одно условие должно быть истинно
+if (age >= 65 || score >= 90) {
+    System.out.println("Специальный доступ");
+}
+
+// Логическое НЕ (!) - инвертирует условие
+if (!(age < 18)) {
+    System.out.println("Вы совершеннолетний");
+}</code></pre>
+                    
+                    <h2>Пример программы</h2>
+                    <pre><code>import java.util.Scanner;
+
+public class ConditionalExample {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Введите число: ");
+        int number = scanner.nextInt();
+        
+        // Проверка на положительное/отрицательное
+        if (number > 0) {
+            System.out.println("Число положительное");
+        } else if (number < 0) {
+            System.out.println("Число отрицательное");
+        } else {
+            System.out.println("Это ноль");
+        }
+        
+        // Проверка делимости
+        if (number % 2 == 0 && number % 3 == 0) {
+            System.out.println("Число делится на 2 и на 3");
+        } else {
+            System.out.println("Число НЕ делится на 2 и на 3 одновременно");
+        }
+        
+        // Определение времени суток
+        int hour = 14;
+        
+        if (hour >= 5 && hour < 12) {
+            System.out.println("Утро");
+        } else if (hour >= 12 && hour < 18) {
+            System.out.println("День");
+        } else if (hour >= 18 && hour < 23) {
+            System.out.println("Вечер");
+        } else {
+            System.out.println("Ночь");
+        }
+        
+        scanner.close();
+    }
+}</code></pre>
+                    
+                    <h2>Ключевые моменты</h2>
+                    <ul>
+                        <li>Условные операторы позволяют управлять потоком выполнения программы</li>
+                        <li>Оператор <code>if</code> выполняет код, если условие истинно</li>
+                        <li>Конструкция <code>if-else</code> позволяет обработать оба случая (истина/ложь)</li>
+                        <li>Конструкция <code>if-else-if</code> полезна для проверки нескольких условий</li>
+                        <li>Оператор <code>switch</code> удобен для выбора из множества вариантов</li>
+                        <li>Тернарный оператор позволяет compactly записывать простые условия</li>
+                        <li>Логические операторы (<code>&&</code>, <code>||</code>, <code>!</code>) помогают создавать сложные условия</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-navigation">
+                    <a href="lesson-3.html" class="nav-button back-button"><i class="fas fa-arrow-left"></i> Предыдущий урок</a>
+                    <a href="../lessons.html" class="nav-button back-button"><i class="fas fa-list"></i> Все уроки</a>
+                    <a href="lesson-5.html" class="nav-button">Следующий урок <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+    </main>
+<!-- Блок завершения урока -->
+<div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background-color: rgba(0, 230, 204, 0.1); border-radius: 8px;">
+    <button onclick="completeLesson()" class="nav-button" id="complete-btn">
+        <i class="fas fa-check-circle"></i> Завершить урок
+    </button>
+    <p id="completion-message" style="display: none; color: var(--accent); margin-top: 1rem;">
+        <i class="fas fa-check-circle"></i> Урок завершен!
+    </p>
+</div>
+
+<script>
+    // Уникальный идентификатор для каждого урока
+    const lessonId = "lesson-4"; // Замените на соответствующий ID для каждого урока
+    
+    // Проверяем, завершен ли уже урок
+    document.addEventListener('DOMContentLoaded', function() {
+        // Проверяем в sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Проверяем в localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}}');
+        
+        if (sessionCompleted[lessonId] || userData.completedLessons[lessonId]) {
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+        }
+    });
+    
+    // Функция завершения урока
+    function completeLesson() {
+        // Загружаем данные из sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Загружаем данные из localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}, "consecutiveDays":0, "dailyCompletions":{}}');
+        
+        // Если урок еще не завершен
+        if (!sessionCompleted[lessonId] && !userData.completedLessons[lessonId]) {
+            // Отмечаем урок как завершенный в sessionStorage
+            sessionCompleted[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            sessionStorage.setItem('completedLessons', JSON.stringify(sessionCompleted));
+            
+            // Обновляем данные для достижений в localStorage
+            userData.completedLessons[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            
+            // Обновляем статистику последовательных дней
+            const today = new Date();
+            const lastVisit = userData.lastVisit ? new Date(userData.lastVisit) : new Date();
+            const diffTime = Math.abs(today - lastVisit);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays <= 1) {
+                userData.consecutiveDays = (userData.consecutiveDays || 0) + 1;
+            } else {
+                userData.consecutiveDays = 1;
+            }
+            
+            // Обновляем ежедневную статистику
+            const todayStr = today.toDateString();
+            userData.dailyCompletions = userData.dailyCompletions || {};
+            userData.dailyCompletions[todayStr] = (userData.dailyCompletions[todayStr] || 0) + 1;
+            
+            userData.lastVisit = today.toISOString();
+            
+            // Если это первый визит, устанавливаем дату первого визита
+            if (!userData.firstVisit) {
+                userData.firstVisit = today.toISOString();
+            }
+            
+            // Сохраняем обновленные данные
+            localStorage.setItem('userAchievements', JSON.stringify(userData));
+            
+            // Обновляем UI
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+            
+            // Показываем уведомление
+            showNotification('Урок завершен!');
+        }
+    }
+    
+    // Функция показа уведомления
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--accent)';
+        notification.style.color = 'var(--bg-dark)';
+        notification.style.padding = '1rem';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 500);
+        }, 3000);
+    }
+</script>
+    <footer>
+        <p>© 2025 JavaMaster - Учебный проект для 9 класса</p>
+    </footer>
+
+    <script>
+        // Управление навигационной панелью
+        let lastScrollY = window.scrollY;
+        const header = document.querySelector('header');
+        const navHeight = header.offsetHeight;
+
+        // Функция для управления видимостью навигационной панели
+        function manageHeaderVisibility() {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY < 50) {
+                // Вверху страницы - всегда показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            } else if (currentScrollY > lastScrollY) {
+                // Прокрутка вниз - скрываем навигацию
+                header.classList.remove('header-visible');
+                header.classList.add('header-hidden');
+            } else {
+                // Прокрутка вверх - показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+
+        // Обработчик события прокрутки
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    manageHeaderVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Анимация появления элементов контента при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Наблюдаем за всеми элементами контента урока
+        document.querySelectorAll('.lesson-content > *').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Мобильное меню
+        const burger = document.querySelector('.burger');
+        const nav = document.querySelector('.nav-links');
+        const navLinks = document.querySelectorAll('.nav-links li');
+
+        if (burger) {
+            burger.addEventListener('click', () => {
+                // Переключение навигации
+                nav.classList.toggle('nav-active');
+                
+                // Анимация ссылок
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Анимация бургера
+                burger.classList.toggle('toggle');
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            // Убедимся, что заголовок видим в начале
+            header.classList.add('header-visible');
+        });
+    </script>
+</body>
+</html>

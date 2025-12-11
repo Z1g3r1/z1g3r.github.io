@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Массивы | JavaMaster</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Специфические стили для страницы урока */
+        .lesson-container {
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .lesson-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-title {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 230, 204, 0.3);
+        }
+        
+        .lesson-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .lesson-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .lesson-content h2 {
+            color: var(--accent);
+            margin: 2.5rem 0 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 230, 204, 0.2);
+            font-size: 1.8rem;
+        }
+        
+        .lesson-content h3 {
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .lesson-content p {
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .lesson-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-content pre {
+            background-color: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lesson-content code {
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+        
+        .exercise {
+            background-color: rgba(0, 230, 204, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .exercise h3 {
+            color: var(--accent);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-button {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .back-button {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 230, 204, 0.1);
+        }
+        
+        /* Анимации для контента урока */
+        .lesson-content > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .lesson-content > *.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Стили для блоков кода с пояснениями */
+        .code-explanation {
+            background-color: rgba(0, 230, 204, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .code-explanation p {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* Стили для таблицы методов массивов */
+        .methods-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .methods-table th, .methods-table td {
+            padding: 1rem;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .methods-table th {
+            background-color: rgba(0, 230, 204, 0.2);
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .methods-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .methods-table code {
+            background-color: rgba(0, 230, 204, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: 1.5rem;
+            }
+            
+            .lesson-title {
+                font-size: 2rem;
+            }
+            
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-button {
+                justify-content: center;
+            }
+            
+            .methods-table {
+                font-size: 0.9rem;
+            }
+            
+            .methods-table th, 
+            .methods-table td {
+                padding: 0.5rem;
+            }
+        }
+        
+        .level-medium {
+            background-color: #ff9800;
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Java</span><span class="logo-accent">Master</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Главная</a></li>
+                <li><a href="../lessons.html">Уроки</a></li>
+                <li><a href="../achievements.html">Достижения</a></li>
+                <li><a href="../about.html">О проекте</a></li>
+                <li><a href="../resources.html">Дополнительные ресурсы</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-content">
+            <article class="lesson-container">
+                <div class="lesson-header">
+                    <h1 class="lesson-title">Массивы</h1>
+                    <div class="lesson-meta">
+                        <span class="lesson-duration"><i class="far fa-clock"></i> 40 мин</span>
+                        <span class="lesson-level level-medium">Средний</span>
+                    </div>
+                </div>
+
+                <div class="lesson-content">
+                    <h2>Что такое массивы?</h2>
+                    <p>Массив — это структура данных, которая хранит фиксированное количество элементов одного типа. Элементы массива расположены в памяти последовательно, что обеспечивает быстрый доступ к любому элементу по его индексу.</p>
+                    
+                    <h2>Объявление и инициализация массивов</h2>
+                    <p>Массивы в Java можно объявлять и инициализировать несколькими способами:</p>
+                    
+                    <h3>Способ 1: Объявление с последующей инициализацией</h3>
+                    <pre><code>// Объявление массива
+тип[] имяМассива;
+
+// Инициализация массива
+имяМассива = new тип[размер];</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Создание массива целых чисел</p>
+                    </div>
+                    
+                    <pre><code>int[] numbers;
+numbers = new int[5]; // массив из 5 целых чисел</code></pre>
+                    
+                    <h3>Способ 2: Объявление и инициализация в одной строке</h3>
+                    <pre><code>тип[] имяМассива = new тип[размер];</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Создание массива строк</p>
+                    </div>
+                    
+                    <pre><code>String[] names = new String[3]; // массив из 3 строк</code></pre>
+                    
+                    <h3>Способ 3: Инициализация с предопределенными значениями</h3>
+                    <pre><code>тип[] имяМассива = {значение1, значение2, ..., значениеN};</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Создание массива с начальными значениями</p>
+                    </div>
+                    
+                    <pre><code>int[] primes = {2, 3, 5, 7, 11, 13}; // массив простых чисел
+String[] weekDays = {"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};</code></pre>
+                    
+                    <h2>Доступ к элементам массива</h2>
+                    <p>Для доступа к элементам массива используется оператор <code>[]</code> с указанием индекса элемента. Индексация начинается с 0.</p>
+                    
+                    <pre><code>int[] numbers = {10, 20, 30, 40, 50};
+
+// Получение значения элемента
+int first = numbers[0]; // 10
+int third = numbers[2]; // 30
+
+// Изменение значения элемента
+numbers[1] = 25; // теперь numbers[1] = 25
+numbers[4] = numbers[0] + numbers[2]; // numbers[4] = 10 + 30 = 40</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Важно:</strong> Попытка доступа к несуществующему элементу (вне границ массива) вызовет исключение <code>ArrayIndexOutOfBoundsException</code>.</p>
+                    </div>
+                    
+                    <h2>Длина массива</h2>
+                    <p>У каждого массива есть свойство <code>length</code>, которое содержит количество элементов в массиве:</p>
+                    
+                    <pre><code>int[] numbers = {5, 10, 15, 20};
+int size = numbers.length; // size = 4</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Использование length в цикле для перебора элементов массива</p>
+                    </div>
+                    
+                    <pre><code>int[] numbers = {5, 10, 15, 20, 25};
+
+for (int i = 0; i < numbers.length; i++) {
+    System.out.println("Элемент " + i + ": " + numbers[i]);
+}</code></pre>
+                    
+                    <h2>Многомерные массивы</h2>
+                    <p>Java поддерживает многомерные массивы (массивы массивов). Наиболее часто используются двумерные массивы.</p>
+                    
+                    <h3>Двумерные массивы</h3>
+                    <pre><code>// Объявление и создание двумерного массива
+тип[][] имяМассива = new тип[строк][столбцов];</code></pre>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Создание и использование двумерного массива</p>
+                    </div>
+                    
+                    <pre><code>// Создание матрицы 3x3
+int[][] matrix = new int[3][3];
+
+// Инициализация значений
+matrix[0][0] = 1;
+matrix[0][1] = 2;
+matrix[0][2] = 3;
+matrix[1][0] = 4;
+matrix[1][1] = 5;
+matrix[1][2] = 6;
+matrix[2][0] = 7;
+matrix[2][1] = 8;
+matrix[2][2] = 9;
+
+// Или с предопределенными значениями
+int[][] predefinedMatrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};</code></pre>
+                    
+                    <h3>Перебор многомерных массивов</h3>
+                    <pre><code>// Перебор двумерного массива с помощью вложенных циклов
+for (int i = 0; i < matrix.length; i++) {
+    for (int j = 0; j < matrix[i].length; j++) {
+        System.out.print(matrix[i][j] + " ");
+    }
+    System.out.println();
+}</code></pre>
+                    
+                    <h2>Полезные методы для работы с массивами</h2>
+                    <p>Класс <code>Arrays</code> из пакета <code>java.util</code> предоставляет множество полезных методов для работы с массивами.</p>
+                    
+                    <table class="methods-table">
+                        <thead>
+                            <tr>
+                                <th>Метод</th>
+                                <th>Описание</th>
+                                <th>Пример</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>Arrays.toString()</code></td>
+                                <td>Преобразует массив в строку для вывода</td>
+                                <td><code>Arrays.toString(arr)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>Arrays.sort()</code></td>
+                                <td>Сортирует массив</td>
+                                <td><code>Arrays.sort(arr)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>Arrays.binarySearch()</code></td>
+                                <td>Бинарный поиск в отсортированном массиве</td>
+                                <td><code>Arrays.binarySearch(arr, key)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>Arrays.fill()</code></td>
+                                <td>Заполняет массив указанным значением</td>
+                                <td><code>Arrays.fill(arr, value)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>Arrays.copyOf()</code></td>
+                                <td>Копирует массив с указанной длиной</td>
+                                <td><code>Arrays.copyOf(arr, newLength)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>Arrays.equals()</code></td>
+                                <td>Сравнивает два массива</td>
+                                <td><code>Arrays.equals(arr1, arr2)</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="code-explanation">
+                        <p><strong>Пример:</strong> Использование методов класса Arrays</p>
+                    </div>
+                    
+                    <pre><code>import java.util.Arrays;
+
+int[] numbers = {5, 3, 8, 1, 4};
+
+// Сортировка массива
+Arrays.sort(numbers); // [1, 3, 4, 5, 8]
+
+// Поиск элемента
+int index = Arrays.binarySearch(numbers, 5); // index = 3
+
+// Преобразование в строку
+String arrayString = Arrays.toString(numbers); // "[1, 3, 4, 5, 8]"
+
+// Заполнение массива
+int[] filledArray = new int[5];
+Arrays.fill(filledArray, 7); // [7, 7, 7, 7, 7]
+
+// Копирование массива
+int[] copiedArray = Arrays.copyOf(numbers, 3); // [1, 3, 4]</code></pre>
+                    
+                    <div class="exercise">
+                        <h3><i class="fas fa-pencil-alt"></i> Упражнение</h3>
+                        <p>Напишите программу, которая:</p>
+                        <ol>
+                            <li>Создает массив из 10 случайных чисел от 1 до 100</li>
+                            <li>Находит максимальный и минимальный элементы массива</li>
+                            <li>Вычисляет среднее значение элементов массива</li>
+                            <li>Сортирует массив по возрастанию</li>
+                            <li>Создает двумерный массив (матрицу) 4x4 и заполняет его значениями умножения индексов (matrix[i][j] = i * j)</li>
+                            <li>Находит сумму элементов главной диагонали матрицы</li>
+                        </ol>
+                    </div>
+                    
+                    <h2>Передача массивов в методы</h2>
+                    <p>Массивы передаются в методы по ссылке, что позволяет изменять исходный массив внутри метода:</p>
+                    
+                    <pre><code>public class ArrayMethods {
+    // Метод для умножения всех элементов массива на 2
+    public static void multiplyByTwo(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] *= 2;
+        }
+    }
+    
+    // Метод для создания и возвращения нового массива
+    public static int[] createArray(int size, int value) {
+        int[] newArray = new int[size];
+        Arrays.fill(newArray, value);
+        return newArray;
+    }
+    
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3, 4, 5};
+        multiplyByTwo(numbers); // исходный массив изменяется
+        System.out.println(Arrays.toString(numbers)); // [2, 4, 6, 8, 10]
+        
+        int[] newArray = createArray(5, 7);
+        System.out.println(Arrays.toString(newArray)); // [7, 7, 7, 7, 7]
+    }
+}</code></pre>
+                    
+                    <h2>Пример программы</h2>
+                    <pre><code>import java.util.Arrays;
+import java.util.Random;
+
+public class ArraysExample {
+    public static void main(String[] args) {
+        // Создание и заполнение массива случайными числами
+        int[] numbers = new int[10];
+        Random random = new Random();
+        
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = random.nextInt(100) + 1; // числа от 1 до 100
+        }
+        
+        System.out.println("Исходный массив: " + Arrays.toString(numbers));
+        
+        // Поиск максимального и минимального элементов
+        int max = numbers[0];
+        int min = numbers[0];
+        
+        for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] > max) {
+                max = numbers[i];
+            }
+            if (numbers[i] < min) {
+                min = numbers[i];
+            }
+        }
+        
+        System.out.println("Максимальный элемент: " + max);
+        System.out.println("Минимальный элемент: " + min);
+        
+        // Сортировка массива
+        Arrays.sort(numbers);
+        System.out.println("Отсортированный массив: " + Arrays.toString(numbers));
+        
+        // Создание и работа с двумерным массивом
+        int[][] matrix = new int[4][4];
+        
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = i * j;
+            }
+        }
+        
+        System.out.println("Двумерный массив:");
+        for (int[] row : matrix) {
+            System.out.println(Arrays.toString(row));
+        }
+        
+        // Сумма элементов главной диагонали
+        int diagonalSum = 0;
+        for (int i = 0; i < matrix.length; i++) {
+            diagonalSum += matrix[i][i];
+        }
+        
+        System.out.println("Сумма элементов главной диагонали: " + diagonalSum);
+    }
+}</code></pre>
+                    
+                    <h2>Ключевые моменты</h2>
+                    <ul>
+                        <li>Массивы хранят фиксированное количество элементов одного типа</li>
+                        <li>Индексация элементов массива начинается с 0</li>
+                        <li>Свойство <code>length</code> содержит количество элементов в массиве</li>
+                        <li>Многомерные массивы - это массивы массивов</li>
+                        <li>Класс <code>Arrays</code> предоставляет полезные методы для работы с массивами</li>
+                        <li>Массивы передаются в методы по ссылке</li>
+                        <li>Попытка доступа к элементу вне границ массива вызывает исключение</li>
+                        <li>Цикл <code>for</code> и enhanced for (for-each) удобны для перебора элементов массива</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-navigation">
+                    <a href="lesson-5.html" class="nav-button back-button"><i class="fas fa-arrow-left"></i> Предыдущий урок</a>
+                    <a href="../lessons.html" class="nav-button back-button"><i class="fas fa-list"></i> Все уроки</a>
+                    <a href="lesson-7.html" class="nav-button">Следующий урок <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </article>
+        </div>
+    </main>
+<!-- Блок завершения урока -->
+<div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background-color: rgba(0, 230, 204, 0.1); border-radius: 8px;">
+    <button onclick="completeLesson()" class="nav-button" id="complete-btn">
+        <i class="fas fa-check-circle"></i> Завершить урок
+    </button>
+    <p id="completion-message" style="display: none; color: var(--accent); margin-top: 1rem;">
+        <i class="fas fa-check-circle"></i> Урок завершен!
+    </p>
+</div>
+
+<script>
+    // Уникальный идентификатор для каждого урока
+    const lessonId = "lesson-6"; // Замените на соответствующий ID для каждого урока
+    
+    // Проверяем, завершен ли уже урок
+    document.addEventListener('DOMContentLoaded', function() {
+        // Проверяем в sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Проверяем в localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}}');
+        
+        if (sessionCompleted[lessonId] || userData.completedLessons[lessonId]) {
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+        }
+    });
+    
+    // Функция завершения урока
+    function completeLesson() {
+        // Загружаем данные из sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Загружаем данные из localStorage (для достижений)
+        const userData = JSON.parse(localStorage.getItem('userAchievements') || '{"completedLessons":{}, "consecutiveDays":0, "dailyCompletions":{}}');
+        
+        // Если урок еще не завершен
+        if (!sessionCompleted[lessonId] && !userData.completedLessons[lessonId]) {
+            // Отмечаем урок как завершенный в sessionStorage
+            sessionCompleted[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            sessionStorage.setItem('completedLessons', JSON.stringify(sessionCompleted));
+            
+            // Обновляем данные для достижений в localStorage
+            userData.completedLessons[lessonId] = {
+                completedAt: new Date().toISOString(),
+                completed: true
+            };
+            
+            // Обновляем статистику последовательных дней
+            const today = new Date();
+            const lastVisit = userData.lastVisit ? new Date(userData.lastVisit) : new Date();
+            const diffTime = Math.abs(today - lastVisit);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays <= 1) {
+                userData.consecutiveDays = (userData.consecutiveDays || 0) + 1;
+            } else {
+                userData.consecutiveDays = 1;
+            }
+            
+            // Обновляем ежедневную статистику
+            const todayStr = today.toDateString();
+            userData.dailyCompletions = userData.dailyCompletions || {};
+            userData.dailyCompletions[todayStr] = (userData.dailyCompletions[todayStr] || 0) + 1;
+            
+            userData.lastVisit = today.toISOString();
+            
+            // Если это первый визит, устанавливаем дату первого визита
+            if (!userData.firstVisit) {
+                userData.firstVisit = today.toISOString();
+            }
+            
+            // Сохраняем обновленные данные
+            localStorage.setItem('userAchievements', JSON.stringify(userData));
+            
+            // Обновляем UI
+            document.getElementById('complete-btn').style.display = 'none';
+            document.getElementById('completion-message').style.display = 'block';
+            
+            // Показываем уведомление
+            showNotification('Урок завершен!');
+        }
+    }
+    
+    // Функция показа уведомления
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--accent)';
+        notification.style.color = 'var(--bg-dark)';
+        notification.style.padding = '1rem';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 500);
+        }, 3000);
+    }
+</script>
+    <footer>
+        <p>© 2025 JavaMaster - Учебный проект для 9 класса</p>
+    </footer>
+
+    <script>
+        // Управление навигационной панелью
+        let lastScrollY = window.scrollY;
+        const header = document.querySelector('header');
+        const navHeight = header.offsetHeight;
+
+        // Функция для управления видимостью навигационной панели
+        function manageHeaderVisibility() {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY < 50) {
+                // Вверху страницы - всегда показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            } else if (currentScrollY > lastScrollY) {
+                // Прокрутка вниз - скрываем навигацию
+                header.classList.remove('header-visible');
+                header.classList.add('header-hidden');
+            } else {
+                // Прокрутка вверх - показываем навигацию
+                header.classList.remove('header-hidden');
+                header.classList.add('header-visible');
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+
+        // Обработчик события прокрутки
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    manageHeaderVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Анимация появления элементов контента при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Наблюдаем за всеми элементами контента урока
+        document.querySelectorAll('.lesson-content > *').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Мобильное меню
+        const burger = document.querySelector('.burger');
+        const nav = document.querySelector('.nav-links');
+        const navLinks = document.querySelectorAll('.nav-links li');
+
+        if (burger) {
+            burger.addEventListener('click', () => {
+                // Переключение навигации
+                nav.classList.toggle('nav-active');
+                
+                // Анимация ссылок
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Анимация бургera
+                burger.classList.toggle('toggle');
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            // Убедимся, что заголовок видим в начале
+            header.classList.add('header-visible');
+        });
+    </script>
+</body>
+</html>
