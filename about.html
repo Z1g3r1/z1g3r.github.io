@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О проекте | JavaMaster</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .about-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .about-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .about-title {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .about-content {
+            line-height: 1.8;
+        }
+        
+        .about-content h2 {
+            color: var(--accent);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0, 230, 204, 0.2);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: rgba(0, 230, 204, 0.1);
+            border-radius: 10px;
+        }
+        
+        .member-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--bg-dark);
+        }
+        
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-item {
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 1.5rem;
+            }
+            
+            .about-title {
+                font-size: 2rem;
+            }
+            
+            .team-grid, .features-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Java</span><span class="logo-accent">Master</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="lessons.html">Уроки</a></li>
+                <li><a href="achievements.html">Достижения</a></li>
+                <li><a href="about.html" class="active">О проекте</a></li>
+                <li><a href="resources.html">Дополнительные ресурсы</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-content">
+            <div class="about-container">
+                <div class="about-header">
+                    <h1 class="about-title">О проекте JavaMaster</h1>
+                    <p>Изучайте Java с нуля до уверенного уровня</p>
+                </div>
+                
+                <div class="about-content">
+                    <h2>Наша миссия</h2>
+                    <p>JavaMaster создан с целью предоставить качественные и структурированные материалы для изучения языка Java. Мы верим, что программирование должно быть доступно каждому, и стремимся сделать процесс обучения максимально понятным и интересным.</p>
+                    
+                    <h2>Особенности проекта</h2>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <h3><i class="fas fa-graduation-cap"></i> Пошаговое обучение</h3>
+                            <p>От основ программирования до объектно-ориентированного программирования</p>
+                        </div>
+                        <div class="feature-item">
+                            <h3><i class="fas fa-laptop-code"></i> Практические примеры</h3>
+                            <p>Множество примеров кода и упражнений для закрепления материала</p>
+                        </div>
+                        <div class="feature-item">
+                            <h3><i class="fas fa-mobile-alt"></i> Адаптивный дизайн</h3>
+                            <p>Учитесь где угодно и когда угодно с любого устройства</p>
+                        </div>
+                        <div class="feature-item">
+                            <h3><i class="fas fa-rocket"></i> Современные технологии</h3>
+                            <p>Изучайте актуальные концепции и лучшие практики Java</p>
+                        </div>
+                    </div>
+                    
+                    <h2>Для кого этот проект?</h2>
+                    <p>Наши материалы подходят для:</p>
+                    <ul>
+                        <li>Новичков, которые только начинают свой путь в программировании</li>
+                        <li>Студентов, изучающих Java в учебных заведениях</li>
+                        <li>Разработчиков, которые хотят освежить свои знания</li>
+                        <li>Всех, кто интересуется программированием на Java</li>
+                    </ul>
+                    
+                    <h2>Технологии проекта</h2>
+                    <p>JavaMaster построен с использованием современных веб-технологий:</p>
+                    <ul>
+                        <li>HTML5 и CSS3 для структуры и стилей</li>
+                        <li>JavaScript для интерактивности</li>
+                        <li>Font Awesome для иконок</li>
+                        <li>Адаптивный дизайн для работы на всех устройствах</li>
+                    </ul>
+                    
+                    <h2>Автор проекта</h2>
+                    <div class="team-grid">
+                        <div class="team-member">
+                            <div class="member-photo">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h3>Ученик 9 класса</h3>
+                            <p>Разработчик и автор контента</p>
+                            <p>Проект создан в рамках учебной программы</p>
+                        </div>
+                    </div>
+                    
+                    <h2>Планы на будущее</h2>
+                    <p>Мы постоянно работаем над улучшением проекта и планируем добавить:</p>
+                    <ul>
+                        <li>Дополнительные уроки по продвинутым темам Java</li>
+                        <li>Интерактивные упражнения с автоматической проверкой</li>
+                        <li>Систему достижений и прогресса обучения</li>
+                        <li>Форум для обсуждения вопросов и помощи</li>
+                    </ul>
+                    
+                    <div class="exercise">
+                        <h3><i class="fas fa-envelope"></i> Свяжитесь с нами</h3>
+                        <p>Есть вопросы, предложения или хотите внести вклад в проект? Мы будем рады вашей обратной связи!</p>
+                        <p>Email: contact@javamaster.example</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 JavaMaster - Учебный проект для 9 класса</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

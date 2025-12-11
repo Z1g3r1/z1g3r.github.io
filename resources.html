@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ресурсы | JavaMaster</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .resources-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .resources-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .resources-title {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .resource-card {
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .resource-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .resource-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .resource-card p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .resource-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--accent);
+            color: var(--bg-dark);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .resource-link:hover {
+            background-color: var(--accent-dark);
+        }
+        
+        @media (max-width: 768px) {
+            .resources-container {
+                padding: 1.5rem;
+            }
+            
+            .resources-title {
+                font-size: 2rem;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Java</span><span class="logo-accent">Master</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="lessons.html">Уроки</a></li>
+                <li><a href="achievements.html">Достижения</a></li>
+                <li><a href="about.html">О проекте</a></li>
+                <li><a href="resources.html" class="active">Ресурсы</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-content">
+            <div class="resources-container">
+                <div class="resources-header">
+                    <h1 class="resources-title">Полезные ресурсы</h1>
+                    <p>Дополнительные материалы для изучения Java и программирования</p>
+                </div>
+                
+                <div class="resources-content">
+                    <h2>Онлайн-курсы и tutorials</h2>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h3>Oracle Java Tutorials</h3>
+                            <p>Официальные tutorials от создателей Java. Подробные руководства по всем аспектам языка.</p>
+                            <a href="https://docs.oracle.com/javase/tutorial/" class="resource-link" target="_blank">Перейти</a>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3>Codecademy Java Course</h3>
+                            <p>Интерактивный курс Java с практическими упражнениями и мгновенной обратной связью.</p>
+                            <a href="https://www.codecademy.com/learn/learn-java" class="resource-link" target="_blank">Перейти</a>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <h3>W3Schools Java Tutorial</h3>
+                            <p>Понятные примеры и упражнения для начинающих. Отличный ресурс для быстрого изучения основ.</p>
+                            <a href="https://www.w3schools.com/java/" class="resource-link" target="_blank">Перейти</a>
+                        </div>
+                    </div>
+                    
+                    <h2>Книги по Java</h2>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h3>"Java: руководство для начинающих"</h3>
+                            <p>Автор: Герберт Шилдт. Отличная книга для тех, кто только начинает изучать Java.</p>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h3>"Философия Java"</h3>
+                            <p>Автор: Брюс Эккель. Классическая книга, глубоко раскрывающая основы языка и ООП.</p>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <h3>"Effective Java"</h3>
+                            <p>Автор: Джошуа Блох. Для тех, кто уже освоил основы и хочет писать качественный код.</p>
+                        </div>
+                    </div>
+                    
+                    <h2>Инструменты разработки</h2>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h3>IntelliJ IDEA</h3>
+                            <p>Мощная IDE для Java-разработки с умными помощниками и удобным интерфейсом.</p>
+                            <a href="https://www.jetbrains.com/idea/" class="resource-link" target="_blank">Скачать</a>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h3>Eclipse</h3>
+                            <p>Бесплатная open-source IDE с поддержкой множества плагинов и расширений.</p>
+                            <a href="https://www.eclipse.org/downloads/" class="resource-link" target="_blank">Скачать</a>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-terminal"></i>
+                            </div>
+                            <h3>JDK (Java Development Kit)</h3>
+                            <p>Необходимый инструмент для разработки на Java. Содержит компилятор и другие утилиты.</p>
+                            <a href="https://adoptium.net/" class="resource-link" target="_blank">Скачать</a>
+                        </div>
+                    </div>
+                    
+                    <h2>Сообщества и форумы</h2>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fab fa-stack-overflow"></i>
+                            </div>
+                            <h3>Stack Overflow</h3>
+                            <p>Крупнейшее сообщество программистов, где можно задать вопросы и найти ответы.</p>
+                            <a href="https://stackoverflow.com/questions/tagged/java" class="resource-link" target="_blank">Перейти</a>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fab fa-reddit"></i>
+                            </div>
+                            <h3>Reddit: r/learnjava</h3>
+                            <p>Сообщество для изучающих Java, где можно делиться опытом и задавать вопросы.</p>
+                            <a href="https://www.reddit.com/r/learnjava/" class="resource-link" target="_blank">Перейти</a>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <h3>GitHub</h3>
+                            <p>Множество open-source проектов на Java для изучения и участия.</p>
+                            <a href="https://github.com/topics/java" class="resource-link" target="_blank">Перейти</a>
+                        </div>
+                    </div>
+                    
+                    <h2>Практика и задачи</h2>
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </div>
+                            <h3>LeetCode</h3>
+                            <p>Платформа с задачами по программированию для подготовки к собеседованиям.</p>
+                            <a href="https://leetcode.com/" class="resource-link" target="_blank">Перейти</a>
+                        </div>
+                        
+                        
+                        <div class="resource-card">
+                            <div class="resource-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <h3>Codewars</h3>
+                            <p>Улучшайте навыки программирования, решая задачи и сравнивая решения с другими.</p>
+                            <a href="https://www.codewars.com/" class="resource-link" target="_blank">Перейти</a>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise">
+                        <h3><i class="fas fa-lightbulb"></i> Советы по изучению</h3>
+                        <ul>
+                            <li>Практикуйтесь регулярно - программирование требует постоянной практики</li>
+                            <li>Не просто копируйте код, а старайтесь понять, как он работает</li>
+                            <li>Начинайте с небольших проектов и постепенно увеличивайте сложность</li>
+                            <li>Присоединяйтесь к сообществам разработчиков для обмена опытом</li>
+                            <li>Не бойтесь совершать ошибки - это естественная часть процесса обучения</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 JavaMaster - Учебный проект для 9 класса</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

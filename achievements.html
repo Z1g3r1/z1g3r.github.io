@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Достижения | JavaMaster</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .achievements-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--accent-glow);
+        }
+        
+        .achievements-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .achievements-title {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .achievement-card {
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .achievement-card.earned {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.3);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.2);
+        }
+        
+        .achievement-card.locked {
+            opacity: 0.6;
+            filter: grayscale(1);
+        }
+        
+        .achievement-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .achievement-card.earned .achievement-icon {
+            color: #4caf50;
+        }
+        
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .achievement-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .achievement-progress {
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .achievement-progress-bar {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .achievement-status {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .achievement-card.earned .achievement-status {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .achievements-container {
+                padding: 1.5rem;
+            }
+            
+            .achievements-title {
+                font-size: 2rem;
+            }
+            
+            .stats-section, .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Java</span><span class="logo-accent">Master</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="lessons.html">Уроки</a></li>
+                <li><a href="achievements.html" class="active">Достижения</a></li>
+                <li><a href="about.html">О проекте</a></li>
+                <li><a href="resources.html">Дополнительные ресурсы</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-content">
+            <div class="achievements-container">
+                <div class="achievements-header">
+                    <h1 class="achievements-title">Достижения</h1>
+                    <p>Отслеживайте ваш прогресс в изучении Java</p>
+                </div>
+                
+                <!-- Статистика -->
+                <div class="stats-section">
+                    <div class="stat-card">
+                        <div class="stat-value" id="completed-lessons">0</div>
+                        <div class="stat-label">Завершено уроков</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-achievements">0</div>
+                        <div class="stat-label">Получено достижений</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="learning-days">0</div>
+                        <div class="stat-label">Дней обучения</div>
+                    </div>
+                </div>
+                
+                <!-- Достижения -->
+                <h2 style="margin-bottom: 1.5rem;">Ваши достижения</h2>
+                <div class="achievements-grid" id="achievements-list">
+                    <!-- Достижения будут загружены через JavaScript -->
+                </div>
+                
+                <!-- Кнопка сброса прогресса -->
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button onclick="resetAllProgress()" class="nav-button back-button">
+                        <i class="fas fa-trash-alt"></i> Сбросить весь прогресс
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 JavaMaster - Учебный проект для 9 класса</p>
+    </footer>
+
+    <script>
+    // Система достижений
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализация данных, если их нет
+        if (!localStorage.getItem('userAchievements')) {
+            const initialData = {
+                completedLessons: {},
+                achievements: {},
+                firstVisit: new Date().toISOString(),
+                lastVisit: new Date().toISOString(),
+                consecutiveDays: 0,
+                dailyCompletions: {}
+            };
+            localStorage.setItem('userAchievements', JSON.stringify(initialData));
+        }
+        
+        // Загрузка данных пользователя
+        const userData = JSON.parse(localStorage.getItem('userAchievements'));
+        
+        // Получаем текущие завершенные уроки из sessionStorage
+        const sessionCompleted = JSON.parse(sessionStorage.getItem('completedLessons') || '{}');
+        
+        // Объединяем с данными из localStorage
+        const allCompleted = {...userData.completedLessons, ...sessionCompleted};
+        
+        // Проверяем и обновляем достижения
+        const updatedData = checkAndUpdateAchievements(userData, allCompleted);
+        
+        // Сохраняем обновленные данные, если есть изменения
+        if (updatedData) {
+            localStorage.setItem('userAchievements', JSON.stringify(updatedData));
+        }
+        
+        // Обновление статистики
+        updateStats(updatedData || userData, allCompleted);
+        
+        // Загрузка и отображение достижений
+        loadAchievements(updatedData || userData, allCompleted);
+    });
+    
+    // Функция проверки и обновления достижений
+    function checkAndUpdateAchievements(userData, allCompleted) {
+        let hasChanges = false;
+        const updatedData = {...userData};
+        
+        // Если achievements не существует, создаем его
+        if (!updatedData.achievements) {
+            updatedData.achievements = {};
+            hasChanges = true;
+        }
+        
+        // Список всех достижений с условиями
+        const achievements = [
+            {
+                id: 'first_lesson',
+                title: 'Первый шаг',
+                description: 'Завершите ваш первый урок',
+                icon: 'fa-play-circle',
+                check: (data, completed) => Object.keys(completed).length >= 1
+            },
+            {
+                id: 'half_course',
+                title: 'На полпути',
+                description: 'Завершите 4 урока',
+                icon: 'fa-chart-line',
+                check: (data, completed) => Object.keys(completed).length >= 4
+            },
+            {
+                id: 'course_complete',
+                title: 'Мастер Java',
+                description: 'Завершите все 8 урока',
+                icon: 'fa-graduation-cap',
+                check: (data, completed) => Object.keys(completed).length >= 8
+            },
+            {
+                id: 'consistent_learner',
+                title: 'Последовательный ученик',
+                description: 'Занимайтесь 3 дня подряд',
+                icon: 'fa-calendar-check',
+                check: (data, completed) => data.consecutiveDays >= 3
+            },
+            {
+                id: 'fast_learner',
+                title: 'Быстрый ученик',
+                description: 'Завершите 2 урока за один день',
+                icon: 'fa-bolt',
+                check: (data, completed) => {
+                    if (!data.dailyCompletions) return false;
+                    const today = new Date().toDateString();
+                    return data.dailyCompletions[today] >= 2;
+                }
+            }
+        ];
+        
+        // Проверяем каждое достижение
+        achievements.forEach(achievement => {
+            const isEarned = updatedData.achievements[achievement.id]?.earned || false;
+            const conditionsMet = achievement.check(updatedData, allCompleted);
+            
+            // Если условия выполнены, но достижение еще не получено
+            if (conditionsMet && !isEarned) {
+                updatedData.achievements[achievement.id] = {
+                    earned: true,
+                    earnedAt: new Date().toISOString()
+                };
+                hasChanges = true;
+                
+                // Показываем уведомление о новом достижении
+                showNotification(`Получено достижение: ${achievement.title}!`);
+            }
+        });
+        
+        return hasChanges ? updatedData : null;
+    }
+    
+    // Функция обновления статистики
+    function updateStats(data, allCompleted) {
+        document.getElementById('completed-lessons').textContent = Object.keys(allCompleted).length;
+        
+        // Подсчет полученных достижений
+        const earnedAchievements = Object.values(data.achievements).filter(a => a.earned).length;
+        document.getElementById('total-achievements').textContent = earnedAchievements;
+        
+        // Подсчет дней обучения
+        const firstVisit = new Date(data.firstVisit);
+        const today = new Date();
+        const diffTime = Math.abs(today - firstVisit);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById('learning-days').textContent = diffDays;
+    }
+    
+    // Функция загрузки и отображения достижений
+    function loadAchievements(userData, allCompleted) {
+        const achievementsList = document.getElementById('achievements-list');
+        achievementsList.innerHTML = '';
+        
+        const achievements = [
+            {
+                id: 'first_lesson',
+                title: 'Первый шаг',
+                description: 'Завершите ваш первый урок',
+                icon: 'fa-play-circle',
+                check: (data, completed) => Object.keys(completed).length >= 1
+            },
+            {
+                id: 'half_course',
+                title: 'На полпути',
+                description: 'Завершите 4 урока',
+                icon: 'fa-chart-line',
+                check: (data, completed) => Object.keys(completed).length >= 4
+            },
+            {
+                id: 'course_complete',
+                title: 'Мастер Java',
+                description: 'Завершите все 8 урока',
+                icon: 'fa-graduation-cap',
+                check: (data, completed) => Object.keys(completed).length >= 8
+            },
+            {
+                id: 'consistent_learner',
+                title: 'Последовательный ученик',
+                description: 'Занимайтесь 3 дня подряд',
+                icon: 'fa-calendar-check',
+                check: (data, completed) => data.consecutiveDays >= 3
+            },
+            {
+                id: 'fast_learner',
+                title: 'Быстрый ученик',
+                description: 'Завершите 2 урока за один день',
+                icon: 'fa-bolt',
+                check: (data, completed) => {
+                    if (!data.dailyCompletions) return false;
+                    const today = new Date().toDateString();
+                    return data.dailyCompletions[today] >= 2;
+                }
+            }
+        ];
+        
+        achievements.forEach(achievement => {
+            const isEarned = userData.achievements[achievement.id]?.earned || false;
+            const progress = achievement.check(userData, allCompleted) ? 100 : 0;
+            
+            const card = document.createElement('div');
+            card.className = `achievement-card ${isEarned ? 'earned' : progress > 0 ? '' : 'locked'}`;
+            card.innerHTML = `
+                <div class="achievement-icon">
+                    <i class="fas ${achievement.icon}"></i>
+                </div>
+                <div class="achievement-title">${achievement.title}</div>
+                <div class="achievement-desc">${achievement.description}</div>
+                <div class="achievement-progress">
+                    <div class="achievement-progress-bar" style="width: ${progress}%"></div>
+                </div>
+                <div class="achievement-status">
+                    ${isEarned ? 'Получено' : progress > 0 ? 'В процессе' : 'Заблокировано'}
+                </div>
+            `;
+            
+            achievementsList.appendChild(card);
+        });
+    }
+    
+    // Функция показа уведомления
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.backgroundColor = 'var(--accent)';
+        notification.style.color = 'var(--bg-dark)';
+        notification.style.padding = '1rem';
+        notification.style.borderRadius = '5px';
+        notification.style.zIndex = '1000';
+        notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 500);
+        }, 3000);
+    }
+    
+    // Функция сброса всего прогресса
+    function resetAllProgress() {
+        if (confirm("Вы уверены, что хотите сбросить весь прогресс? Это действие нельзя отменить.")) {
+            // Очищаем sessionStorage
+            sessionStorage.removeItem('completedLessons');
+            
+            // Очищаем achievements в localStorage
+            const initialData = {
+                completedLessons: {},
+                achievements: {},
+                firstVisit: new Date().toISOString(),
+                lastVisit: new Date().toISOString(),
+                consecutiveDays: 0,
+                dailyCompletions: {}
+            };
+            localStorage.setItem('userAchievements', JSON.stringify(initialData));
+            
+            alert('Весь прогресс сброшен. Страница будет перезагружена.');
+            location.reload();
+        }
+    }
+</script>
+    <script src="script.js"></script>
+</body>
+</html>
